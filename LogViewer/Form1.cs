@@ -13,6 +13,7 @@ using LiveCharts.WinForms;
 using System.IO;
 using LiveCharts.Defaults;
 using System.Windows.Media;
+using LiveCharts.Geared;
 
 namespace LogViewer
 {
@@ -74,6 +75,10 @@ namespace LogViewer
                             }
                         }
                     }
+                    for (int i=0; i < fieldlist.Count; i++ )
+                        {
+                        serieslist.Add(CreateSeries(i));
+                        }
                 }
             }
         }
@@ -93,7 +98,7 @@ namespace LogViewer
             foreach (string datavalue in datavalues.Skip(1))
             {
                 datalist[i].Add(Convert.ToDouble(datavalue ));
-                serieslist.Add(CreateSeries(i));
+                
                 i++;
             }
 
@@ -126,13 +131,14 @@ namespace LogViewer
             cartesianChart1.AxisY.Clear();
             cartesianChart1.Series.Clear();
             cartesianChart1.Zoom = ZoomingOptions.X;
+            cartesianChart1.DisableAnimations = true;
             for (int i=0; i<fieldlist.Count; i++)
             {
                 
                 bool st = checkedListBox1.GetItemChecked(i);
                 if (st)
                 {
-                    Series s = CreateSeries(i);
+                    Series s = serieslist[i];
                     AxisPosition ap = ((seriescount & 1) == 0) ? AxisPosition.RightTop : AxisPosition.LeftBottom;
                     cartesianChart1.AxisY.Add(new Axis { Title = fieldlist[i], Position = ap, Foreground = Brushes[seriescount % Brushes.Length] });
                     s.Stroke = Brushes[seriescount % Brushes.Length];
@@ -152,6 +158,7 @@ namespace LogViewer
         }
         private Series CreateSeries(int i)
         {
+
             List<ObservablePoint> lop = new List<ObservablePoint>();
             for (int j=0; j<datalist[i].Count; j++)
             {
@@ -162,8 +169,8 @@ namespace LogViewer
             Series s = new LineSeries { Values = new ChartValues<ObservablePoint>(lop.ToArray()),
                 PointGeometry = null,
                 StrokeThickness = 1,
-                LineSmoothness = 0,
-                Fill = new System.Windows.Media.SolidColorBrush { Opacity = 0 },
+                LineSmoothness = 1,
+                Fill = System.Windows.Media.Brushes.Transparent,
                 Title = fieldlist[i]
             };
             return (s);
