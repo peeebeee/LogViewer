@@ -13,7 +13,7 @@ using LiveCharts.WinForms;
 using System.IO;
 using LiveCharts.Defaults;
 using System.Windows.Media;
-using LiveCharts.Geared;
+
 
 namespace LogViewer
 {
@@ -24,7 +24,7 @@ namespace LogViewer
         List<double> timelist = new List<double>();
         List<List<double>> datalist = new List<List<double>>();
         List<Series> serieslist = new List<Series>();
-        System.Windows.Media.Brush[] Brushes =
+        System.Windows.Media.Brush[] brushpallette =
 
         {
             System.Windows.Media.Brushes.Red,
@@ -140,8 +140,8 @@ namespace LogViewer
                 {
                     Series s = serieslist[i];
                     AxisPosition ap = ((seriescount & 1) == 0) ? AxisPosition.RightTop : AxisPosition.LeftBottom;
-                    cartesianChart1.AxisY.Add(new Axis { Title = fieldlist[i], Position = ap, Foreground = Brushes[seriescount % Brushes.Length] });
-                    s.Stroke = Brushes[seriescount % Brushes.Length];
+                    cartesianChart1.AxisY.Add(new Axis { Title = fieldlist[i], Position = ap, Foreground = brushpallette[seriescount % brushpallette.Length] });
+                    s.Stroke = brushpallette[seriescount % brushpallette.Length];
                     s.ScalesYAt = seriescount;
                     cartesianChart1.Series.Add(s);
                     
