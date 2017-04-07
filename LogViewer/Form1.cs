@@ -87,7 +87,10 @@ namespace LogViewer
             string[] fieldnames = line.Split(',');
             
             fieldlist = fieldnames.Skip(1).ToList();
-            checkedListBox1.Items.AddRange(fieldlist.ToArray());
+            foreach (string field in fieldlist ) {
+                dataGridView1.Rows.Add(false, field, "");
+            }
+
         }
         private void ParseDataLine(string line)
         {
@@ -134,8 +137,8 @@ namespace LogViewer
             cartesianChart1.DisableAnimations = true;
             for (int i=0; i<fieldlist.Count; i++)
             {
-                
-                bool st = checkedListBox1.GetItemChecked(i);
+
+                bool st = Convert.ToBoolean(dataGridView1.Rows[i].Cells[0].Value);
                 if (st)
                 {
                     Series s = serieslist[i];
@@ -190,9 +193,20 @@ namespace LogViewer
             for (int i = 0; i<fieldlist.Count; i++)
             {
                 //MessageBox.Show(datalist[i][k].ToString());
-                dataGridView1.Rows.Add(datalist[i][k].ToString());
+                dataGridView1.Rows[i].Cells[2].Value = (datalist[i][k].ToString());
             }
             
+        }
+
+        private void cartesianChart1_DataHover(object sender, ChartPoint chartPoint)
+        {
+            int k = chartPoint.Key;
+
+            for (int i = 0; i < fieldlist.Count; i++)
+            {
+                //MessageBox.Show(datalist[i][k].ToString());
+                dataGridView1.Rows[i].Cells[2].Value = (datalist[i][k].ToString());
+            }
         }
     }
 
