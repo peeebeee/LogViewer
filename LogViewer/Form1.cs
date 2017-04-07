@@ -181,6 +181,19 @@ namespace LogViewer
         {
             UpdateChart();
         }
+
+        private void cartesianChart1_DataClick(object sender, ChartPoint chartPoint)
+        {
+            //MessageBox.Show(chartPoint.Key.ToString());
+            int k = chartPoint.Key;
+            
+            for (int i = 0; i<fieldlist.Count; i++)
+            {
+                //MessageBox.Show(datalist[i][k].ToString());
+                dataGridView1.Rows.Add(datalist[i][k].ToString());
+            }
+            
+        }
     }
 
 }
